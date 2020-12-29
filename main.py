@@ -5,18 +5,15 @@ import math
 RED = "#e7305b"
 GREEN = "#9bdeac"
 FONT_NAME = "Courier"
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 20
+timer = None
 #-------- TIMER ------- #
 def start_timer():
     count_down(5 * 60)
 
-
-
-
-
-
+#------ RESET TIMER -------#
+def reset_timer():
+    window.after_cancel(timer)
+    time_label.config(text="00:00")
 #--------- COUNTDOWN -------- #
 def count_down(count):
     
@@ -27,7 +24,8 @@ def count_down(count):
     
     time_label.config(text=f"{count_min}:{count_sec}")
     if count > 0:
-        window.after(1000,count_down,count-1)
+        global timer
+        timer = window.after(1000,count_down,count-1)
 
 # ------- UI SETUP --------- #
 window = Tk()
@@ -38,7 +36,7 @@ time_label = Label(text="00:00", fg="white",bg="black",font=(FONT_NAME,50))
 time_label.pack()
 start_button = Button(text="start",width=10,bg=GREEN,fg="white",command=start_timer)
 start_button.pack()
-reset_button = Button(text="reset",width=10,bg=RED,fg="white")
+reset_button = Button(text="reset",width=10,bg=RED,fg="white",command=reset_timer)
 reset_button.pack()
 
 window.mainloop()
